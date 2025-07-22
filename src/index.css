@@ -2,41 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* MindMatch Design System - Beautiful purple gradients and vibrant accents */
 
 @layer base {
   :root {
+    /* Core brand colors - purple gradient theme */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 258 100% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 258 100% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 258 100% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary purple from brand */
+    --primary: 258 84% 47%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 258 100% 60%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Soft purple secondary */
+    --secondary: 258 30% 96%;
+    --secondary-foreground: 258 84% 47%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 258 20% 96%;
+    --muted-foreground: 258 30% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Brand accent colors from logo */
+    --accent-yellow: 45 93% 47%;
+    --accent-pink: 330 81% 60%;
+    --accent-blue: 217 91% 60%;
+    --accent: 258 30% 96%;
+    --accent-foreground: 258 84% 47%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 258 20% 90%;
+    --input: 258 20% 95%;
+    --ring: 258 84% 47%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Custom gradients for brand consistency */
+    --gradient-primary: linear-gradient(135deg, hsl(258 84% 47%) 0%, hsl(258 100% 60%) 50%, hsl(217 91% 60%) 100%);
+    --gradient-background: linear-gradient(180deg, hsl(258 84% 47%) 0%, hsl(258 90% 55%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.9) 0%, hsl(0 0% 100% / 0.8) 100%);
+    
+    /* Shadows with brand colors */
+    --shadow-brand: 0 10px 30px -10px hsl(258 84% 47% / 0.3);
+    --shadow-glow: 0 0 40px hsl(258 100% 60% / 0.4);
+    
+    /* Smooth transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
