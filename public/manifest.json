@@ -1,0 +1,17 @@
+{
+  "name": "MindMatch",
+  "short_name": "MindMatch",
+  "description": "NDIS community connection app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8B5CF6",
+  "icons": [
+    {
+      "src": "/lovable-uploads/1f965578-9448-42be-bf11-f2efd40dab41.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

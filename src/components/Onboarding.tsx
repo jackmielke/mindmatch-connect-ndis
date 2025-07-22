@@ -5,6 +5,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Handshake, Users, ArrowRight, User } from "lucide-react";
 
+const PARTICIPANT_INTERESTS = [
+  "Music", "Art", "Sports", "Reading", "Movies", "Cooking", "Gaming", "Photography",
+  "Dancing", "Swimming", "Hiking", "Yoga", "Crafts", "Gardening", "Animals", "Travel",
+  "Technology", "Board Games", "Puzzles", "Writing", "Singing", "Drawing", "Fishing"
+];
+
+const CARER_SKILLS = [
+  "Personal Care", "Cooking", "Cleaning", "Companionship", "Transportation", "Shopping",
+  "Medication Support", "Exercise Support", "Social Activities", "Hobby Support",
+  "Technology Help", "Reading Support", "Music Therapy", "Art Therapy", "Pet Care",
+  "Gardening", "Life Skills", "Communication", "Behavioral Support", "Respite Care"
+];
+
 interface OnboardingProps {
   onComplete: (userType: "participant" | "carer", userData: any) => void;
 }
@@ -17,8 +30,8 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     age: "",
     location: "",
     bio: "",
-    interests: "",
-    experience: "",
+    interests: [] as string[],
+    experience: [] as string[],
   });
 
   const handleUserTypeSelect = (type: "participant" | "carer") => {
@@ -28,6 +41,15 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const toggleSelection = (item: string, field: 'interests' | 'experience') => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(item)
+        ? prev[field].filter(i => i !== item)
+        : [...prev[field], item]
+    }));
   };
 
   const handleSubmit = () => {
@@ -138,15 +160,35 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="text-sm font-medium">
               {userType === "participant" ? "Interests & Hobbies" : "Skills & Experience"}
             </label>
-            <Input
-              placeholder={userType === "participant" ? "Music, art, sports..." : "Personal care, cooking, companionship..."}
-              value={userType === "participant" ? formData.interests : formData.experience}
-              onChange={(e) => handleInputChange(userType === "participant" ? "interests" : "experience", e.target.value)}
-            />
+            <p className="text-xs text-muted-foreground mb-3">
+              Select all that apply - click to add or remove
+            </p>
+            <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+              {(userType === "participant" ? PARTICIPANT_INTERESTS : CARER_SKILLS).map((item) => {
+                const isSelected = userType === "participant" 
+                  ? formData.interests.includes(item)
+                  : formData.experience.includes(item);
+                
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleSelection(item, userType === "participant" ? "interests" : "experience")}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                      isSelected
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <Button
@@ -154,7 +196,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             variant="premium"
             size="lg"
             className="w-full mt-6"
-            disabled={!formData.name || !formData.bio}
+            disabled={!formData.name || !formData.bio || (userType === "participant" ? formData.interests.length === 0 : formData.experience.length === 0)}
           >
             Start Connecting
             <ArrowRight className="w-5 h-5" />
