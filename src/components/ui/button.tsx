@@ -5,29 +5,30 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-gradient-primary text-primary-foreground hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]",
+        default: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/90 hover:shadow-medium",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground shadow-soft hover:bg-destructive/90",
         outline:
-          "border-2 border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-primary bg-background text-primary hover:bg-primary-light",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground shadow-soft hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        like: "bg-gradient-to-r from-accent-pink to-accent-yellow text-white hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]",
-        pass: "bg-muted text-muted-foreground hover:bg-muted/80",
-        premium: "bg-gradient-to-r from-accent-blue to-primary-glow text-white hover:shadow-brand hover:scale-[1.02]",
+        request: "bg-accent-blue text-white shadow-soft hover:bg-accent-blue/90 hover:shadow-medium",
+        decline: "bg-muted text-muted-foreground shadow-soft hover:bg-muted/80",
+        success: "bg-accent-green text-white shadow-soft hover:bg-accent-green/90",
+        premium: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/90 hover:shadow-medium",
       },
       size: {
-        default: "h-12 px-6 py-3",
+        default: "h-11 px-6 py-2",
         sm: "h-9 rounded-md px-3",
-        lg: "h-14 rounded-lg px-8 text-lg",
-        icon: "h-12 w-12",
-        xl: "h-16 rounded-xl px-10 text-xl",
+        lg: "h-12 rounded-lg px-8 text-base",
+        icon: "h-11 w-11",
+        xl: "h-14 rounded-xl px-10 text-lg",
       },
     },
     defaultVariants: {

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, X, MapPin, Clock, Star } from "lucide-react";
+import { UserCheck, X, MapPin, Clock, Star } from "lucide-react";
 
 interface MatchCardProps {
   name: string;
@@ -26,10 +26,10 @@ const MatchCard = ({
   onPass 
 }: MatchCardProps) => {
   return (
-    <Card className="w-full max-w-sm mx-auto border-white/20 bg-gradient-card backdrop-blur-sm shadow-brand">
+    <Card className="w-full max-w-sm mx-auto border shadow-medium bg-white">
       <CardContent className="p-0">
         {/* Profile Image */}
-        <div className="aspect-square bg-gradient-to-br from-accent-blue/20 to-accent-pink/20 flex items-center justify-center text-6xl font-bold text-primary rounded-t-lg">
+        <div className="aspect-square bg-gradient-to-br from-primary-light to-accent-blue/10 flex items-center justify-center text-6xl font-bold text-primary rounded-t-lg">
           {image ? (
             <img src={image} alt={name} className="w-full h-full object-cover rounded-t-lg" />
           ) : (
@@ -42,7 +42,7 @@ const MatchCard = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold text-foreground">{name}, {age}</h3>
-              <div className="flex items-center space-x-1 text-accent-yellow">
+              <div className="flex items-center space-x-1 text-accent-orange">
                 <Star className="w-4 h-4 fill-current" />
                 <span className="text-sm font-medium">4.9</span>
               </div>
@@ -81,7 +81,7 @@ const MatchCard = ({
           {/* Action Buttons */}
           <div className="flex space-x-3 pt-4">
             <Button
-              variant="pass"
+              variant="decline"
               size="lg"
               className="flex-1"
               onClick={onPass}
@@ -90,13 +90,13 @@ const MatchCard = ({
               Pass
             </Button>
             <Button
-              variant="like"
+              variant="request"
               size="lg"
               className="flex-1"
               onClick={onLike}
             >
-              <Heart className="w-5 h-5" />
-              Connect
+              <UserCheck className="w-5 h-5" />
+              Send Request
             </Button>
           </div>
         </div>

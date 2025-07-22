@@ -33,18 +33,18 @@ const ProfilePage = ({ userType, userData }: ProfilePageProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-background pb-20">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 pt-12">
-        <h1 className="text-2xl font-bold text-white">Profile</h1>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+      <div className="flex items-center justify-between p-4 pt-12 bg-white border-b shadow-soft">
+        <h1 className="text-2xl font-bold text-foreground">Profile</h1>
+        <Button variant="ghost" size="icon" className="text-foreground">
           <Settings className="w-5 h-5" />
         </Button>
       </div>
 
       {/* Profile Header */}
-      <div className="px-4 mb-6">
-        <Card className="border-white/20 bg-gradient-card backdrop-blur-sm">
+      <div className="px-4 py-6">
+        <Card className="border shadow-medium bg-white">
           <CardContent className="p-6 text-center">
             <div className="relative inline-block mb-4">
               <Avatar className="w-24 h-24">
@@ -106,7 +106,7 @@ const ProfilePage = ({ userType, userData }: ProfilePageProps) => {
 
       {/* About Section */}
       <div className="px-4 mb-6">
-        <Card className="border-white/20 bg-gradient-card backdrop-blur-sm">
+        <Card className="border shadow-soft bg-white">
           <CardHeader>
             <CardTitle className="text-foreground">About Me</CardTitle>
           </CardHeader>
@@ -120,7 +120,7 @@ const ProfilePage = ({ userType, userData }: ProfilePageProps) => {
 
       {/* Interests/Skills */}
       <div className="px-4 mb-6">
-        <Card className="border-white/20 bg-gradient-card backdrop-blur-sm">
+        <Card className="border shadow-soft bg-white">
           <CardHeader>
             <CardTitle className="text-foreground">
               {userType === "participant" ? "Interests & Hobbies" : "Skills & Specializations"}
@@ -140,7 +140,7 @@ const ProfilePage = ({ userType, userData }: ProfilePageProps) => {
 
       {/* Video Introduction */}
       <div className="px-4 mb-6">
-        <Card className="border-white/20 bg-gradient-card backdrop-blur-sm">
+        <Card className="border shadow-soft bg-white">
           <CardHeader>
             <CardTitle className="text-foreground">Video Introduction</CardTitle>
           </CardHeader>
@@ -161,7 +161,7 @@ const ProfilePage = ({ userType, userData }: ProfilePageProps) => {
 
       {/* Account Settings */}
       <div className="px-4 mb-6">
-        <Card className="border-white/20 bg-gradient-card backdrop-blur-sm">
+        <Card className="border shadow-soft bg-white">
           <CardHeader>
             <CardTitle className="text-foreground">Account</CardTitle>
           </CardHeader>

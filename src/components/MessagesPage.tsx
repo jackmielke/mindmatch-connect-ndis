@@ -97,14 +97,14 @@ const MessagesPage = () => {
     const chat = chats.find(c => c.id === selectedChat);
     
     return (
-      <div className="min-h-screen bg-gradient-background pb-20">
+      <div className="min-h-screen bg-background pb-20">
         {/* Chat Header */}
-        <div className="flex items-center space-x-4 p-4 pt-12 bg-white/10 backdrop-blur-sm border-b border-white/20">
+        <div className="flex items-center space-x-4 p-4 pt-12 bg-white border-b shadow-soft">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSelectedChat(null)}
-            className="text-white hover:bg-white/10"
+            className="text-foreground"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
@@ -114,8 +114,8 @@ const MessagesPage = () => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="font-semibold text-white">{chat?.name}</h2>
-            <p className="text-white/70 text-sm">Online now</p>
+            <h2 className="font-semibold text-foreground">{chat?.name}</h2>
+            <p className="text-muted-foreground text-sm">Online now</p>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ const MessagesPage = () => {
                 className={`max-w-[80%] p-3 rounded-2xl ${
                   message.senderId === "me"
                     ? "bg-primary text-primary-foreground"
-                    : "bg-white/90 text-foreground"
+                    : "bg-white border shadow-soft text-foreground"
                 }`}
               >
                 <p className="text-sm">{message.content}</p>
@@ -145,14 +145,14 @@ const MessagesPage = () => {
         </div>
 
         {/* Message Input */}
-        <div className="p-4 bg-white/10 backdrop-blur-sm border-t border-white/20">
+        <div className="p-4 bg-white border-t shadow-soft">
           <div className="flex space-x-3">
             <Input
               placeholder="Type a message..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-              className="flex-1 border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/50"
+              className="flex-1"
             />
             <Button
               variant="premium"
@@ -169,19 +169,19 @@ const MessagesPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-background pb-20">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <div className="p-4 pt-12">
-        <h1 className="text-2xl font-bold text-white mb-2">Messages</h1>
-        <p className="text-white/80">Connect with your matches</p>
+      <div className="p-4 pt-12 bg-white border-b shadow-soft">
+        <h1 className="text-2xl font-bold text-foreground mb-2">Messages</h1>
+        <p className="text-muted-foreground">Connect with your matches</p>
       </div>
 
       {/* Chat List */}
-      <div className="px-4 space-y-3">
+      <div className="px-4 py-4 space-y-3">
         {chats.map((chat) => (
           <Card
             key={chat.id}
-            className="cursor-pointer hover:shadow-brand transition-all duration-300 border-white/20 bg-gradient-card backdrop-blur-sm"
+            className="cursor-pointer hover:shadow-medium transition-all duration-200 border shadow-soft bg-white"
             onClick={() => setSelectedChat(chat.id)}
           >
             <CardContent className="p-4">
@@ -207,7 +207,7 @@ const MessagesPage = () => {
                 </div>
 
                 {chat.unread > 0 && (
-                  <div className="w-6 h-6 bg-accent-pink rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-accent-blue rounded-full flex items-center justify-center">
                     <span className="text-xs font-bold text-white">
                       {chat.unread}
                     </span>
@@ -221,11 +221,11 @@ const MessagesPage = () => {
 
       {chats.length === 0 && (
         <div className="text-center mt-20 space-y-4">
-          <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mx-auto">
-            <Send className="w-10 h-10 text-white" />
+          <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto">
+            <Send className="w-10 h-10 text-muted-foreground" />
           </div>
-          <h3 className="text-xl font-semibold text-white">No messages yet</h3>
-          <p className="text-white/80">Start connecting to begin conversations!</p>
+          <h3 className="text-xl font-semibold text-foreground">No messages yet</h3>
+          <p className="text-muted-foreground">Start connecting to begin conversations!</p>
         </div>
       )}
     </div>

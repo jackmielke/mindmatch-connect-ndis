@@ -64,22 +64,22 @@ const HomePage = ({ userType }: HomePageProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-background pb-20">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 pt-12">
+      <div className="flex items-center justify-between p-4 pt-12 bg-white border-b shadow-soft">
         <div>
-          <h1 className="text-2xl font-bold text-white">Discover</h1>
-          <p className="text-white/80">Find your perfect match</p>
+          <h1 className="text-2xl font-bold text-foreground">Discover</h1>
+          <p className="text-muted-foreground">Find your perfect match</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+          <Button variant="ghost" size="icon" className="text-foreground">
             <Filter className="w-5 h-5" />
           </Button>
         </div>
       </div>
 
       {/* Match Cards */}
-      <div className="flex-1 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center px-4 py-8">
         {mockMatches.length > 0 ? (
           <div className="animate-slide-up">
             <MatchCard
@@ -90,29 +90,29 @@ const HomePage = ({ userType }: HomePageProps) => {
           </div>
         ) : (
           <div className="text-center space-y-4">
-            <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mx-auto">
-              <Sparkles className="w-10 h-10 text-white" />
+            <div className="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center mx-auto">
+              <Sparkles className="w-10 h-10 text-primary" />
             </div>
-            <h3 className="text-xl font-semibold text-white">No more matches</h3>
-            <p className="text-white/80">Check back later for new connections!</p>
+            <h3 className="text-xl font-semibold text-foreground">No more matches</h3>
+            <p className="text-muted-foreground">Check back later for new connections!</p>
           </div>
         )}
       </div>
 
       {/* Match Counter */}
       <div className="text-center pb-4">
-        <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+        <div className="inline-flex items-center space-x-2 bg-white border shadow-soft rounded-full px-4 py-2">
           <div className="flex space-x-1">
             {mockMatches.map((_, index) => (
               <div
                 key={index}
                 className={`w-2 h-2 rounded-full ${
-                  index === currentMatchIndex ? "bg-white" : "bg-white/30"
+                  index === currentMatchIndex ? "bg-primary" : "bg-muted"
                 }`}
               />
             ))}
           </div>
-          <span className="text-white/80 text-sm">
+          <span className="text-muted-foreground text-sm">
             {currentMatchIndex + 1} of {mockMatches.length}
           </span>
         </div>
