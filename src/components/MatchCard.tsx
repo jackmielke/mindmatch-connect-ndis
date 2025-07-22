@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UserCheck, X, MapPin, Clock, Star } from "lucide-react";
+import { useConnections } from "@/hooks/useConnections";
 
 interface MatchCardProps {
   name: string;
@@ -10,6 +11,7 @@ interface MatchCardProps {
   interests: string[];
   image?: string;
   userType: "participant" | "carer";
+  userId: string;
   onLike: () => void;
   onPass: () => void;
 }
@@ -22,9 +24,21 @@ const MatchCard = ({
   interests, 
   image, 
   userType,
+  userId,
   onLike, 
   onPass 
 }: MatchCardProps) => {
+  const { sendConnectionRequest, loading } = useConnections();
+
+  const handleSendRequest = async () => {
+    try {
+      await sendConnectionRequest(userId);
+      onLike();
+    } catch (error) {
+      console.error('Failed to send connection request:', error);
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm mx-auto border shadow-medium bg-white">
       <CardContent className="p-0">
@@ -93,10 +107,11 @@ const MatchCard = ({
               variant="request"
               size="lg"
               className="flex-1"
-              onClick={onLike}
+              onClick={handleSendRequest}
+              disabled={loading}
             >
               <UserCheck className="w-5 h-5" />
-              Send Request
+              {loading ? "Sending..." : "Send Request"}
             </Button>
           </div>
         </div>

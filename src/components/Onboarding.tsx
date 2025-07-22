@@ -4,6 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Handshake, Users, ArrowRight, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
+import { toast } from "sonner";
 
 const PARTICIPANT_INTERESTS = [
   "Music", "Art", "Sports", "Reading", "Movies", "Cooking", "Gaming", "Photography",
@@ -25,6 +28,9 @@ interface OnboardingProps {
 const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [step, setStep] = useState(1);
   const [userType, setUserType] = useState<"participant" | "carer" | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { signInAnonymously } = useAuth();
+  const { createProfile } = useProfile();
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -52,9 +58,27 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     }));
   };
 
-  const handleSubmit = () => {
-    if (userType) {
+  const handleSubmit = async () => {
+    if (!userType) return;
+    
+    setLoading(true);
+    try {
+      // Sign in anonymously first
+      await signInAnonymously();
+      
+      // Create profile
+      await createProfile({
+        ...formData,
+        user_type: userType,
+      });
+      
+      toast.success("Profile created successfully!");
       onComplete(userType, formData);
+    } catch (error) {
+      console.error('Error creating profile:', error);
+      toast.error("Failed to create profile. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,9 +220,9 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             variant="premium"
             size="lg"
             className="w-full mt-6"
-            disabled={!formData.name || !formData.bio || (userType === "participant" ? formData.interests.length === 0 : formData.experience.length === 0)}
+            disabled={loading || !formData.name || !formData.bio || (userType === "participant" ? formData.interests.length === 0 : formData.experience.length === 0)}
           >
-            Start Connecting
+            {loading ? "Creating Profile..." : "Start Connecting"}
             <ArrowRight className="w-5 h-5" />
           </Button>
         </CardContent>
