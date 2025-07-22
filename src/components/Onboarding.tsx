@@ -29,7 +29,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [step, setStep] = useState(1);
   const [userType, setUserType] = useState<"participant" | "carer" | null>(null);
   const [loading, setLoading] = useState(false);
-  const { signInAnonymously } = useAuth();
+  const { signInAnonymously, user } = useAuth();
   const { createProfile } = useProfile();
   const [formData, setFormData] = useState({
     name: "",
@@ -38,6 +38,10 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     bio: "",
     interests: [] as string[],
     experience: [] as string[],
+    instagram: "",
+    facebook: "",
+    tiktok: "",
+    snapchat: "",
   });
 
   const handleUserTypeSelect = (type: "participant" | "carer") => {
@@ -58,13 +62,21 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     }));
   };
 
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
   const handleSubmit = async () => {
     if (!userType) return;
     
     setLoading(true);
     try {
-      // Sign in anonymously first
-      await signInAnonymously();
+      // Sign in anonymously first if not already authenticated
+      if (!user) {
+        await signInAnonymously();
+        // Wait a bit for the auth state to update
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
       
       // Create profile
       await createProfile({
@@ -82,6 +94,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     }
   };
 
+  // Step 1: User Type Selection
   if (step === 1) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -133,6 +146,156 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     );
   }
 
+  // Step 2: Interests & Hobbies / Skills & Experience
+  if (step === 2) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md border shadow-medium bg-white animate-slide-up">
+          <CardHeader className="text-center">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+              <User className="w-6 h-6 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">
+              {userType === "participant" ? "Your Interests & Hobbies" : "Your Skills & Experience"}
+            </CardTitle>
+            <CardDescription>
+              {userType === "participant" 
+                ? "What do you enjoy doing in your free time?"
+                : "What support skills do you have to offer?"
+              }
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground mb-3">
+                Select all that apply - click to add or remove
+              </p>
+              <div className="flex flex-wrap gap-2 max-h-60 overflow-y-auto">
+                {(userType === "participant" ? PARTICIPANT_INTERESTS : CARER_SKILLS).map((item) => {
+                  const isSelected = userType === "participant" 
+                    ? formData.interests.includes(item)
+                    : formData.experience.includes(item);
+                  
+                  return (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => toggleSelection(item, userType === "participant" ? "interests" : "experience")}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <Button
+              onClick={handleNext}
+              variant="premium"
+              size="lg"
+              className="w-full mt-6"
+              disabled={userType === "participant" ? formData.interests.length === 0 : formData.experience.length === 0}
+            >
+              Continue
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 3: Personal Info & Social Media
+  if (step === 3) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md border shadow-medium bg-white animate-slide-up">
+          <CardHeader className="text-center">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+              <User className="w-6 h-6 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Personal Details</CardTitle>
+            <CardDescription>
+              Help others get to know you better
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Name *</label>
+              <Input
+                placeholder="Your name"
+                value={formData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Age</label>
+                <Input
+                  placeholder="25"
+                  value={formData.age}
+                  onChange={(e) => handleInputChange("age", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Location</label>
+                <Input
+                  placeholder="Sydney, NSW"
+                  value={formData.location}
+                  onChange={(e) => handleInputChange("location", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-sm font-medium">Social Media (Optional)</label>
+              <div className="grid grid-cols-2 gap-3">
+                <Input
+                  placeholder="Instagram"
+                  value={formData.instagram}
+                  onChange={(e) => handleInputChange("instagram", e.target.value)}
+                />
+                <Input
+                  placeholder="Facebook"
+                  value={formData.facebook}
+                  onChange={(e) => handleInputChange("facebook", e.target.value)}
+                />
+                <Input
+                  placeholder="TikTok"
+                  value={formData.tiktok}
+                  onChange={(e) => handleInputChange("tiktok", e.target.value)}
+                />
+                <Input
+                  placeholder="Snapchat"
+                  value={formData.snapchat}
+                  onChange={(e) => handleInputChange("snapchat", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <Button
+              onClick={handleNext}
+              variant="premium"
+              size="lg"
+              className="w-full mt-6"
+              disabled={!formData.name}
+            >
+              Continue
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 4: Tell us about yourself
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md border shadow-medium bg-white animate-slide-up">
@@ -142,77 +305,18 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
           </div>
           <CardTitle className="text-2xl">Tell us about yourself</CardTitle>
           <CardDescription>
-            Help us create meaningful connections
+            Share what makes you unique and what you're looking for
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Name</label>
-            <Input
-              placeholder="Your name"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Age</label>
-              <Input
-                placeholder="25"
-                value={formData.age}
-                onChange={(e) => handleInputChange("age", e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Location</label>
-              <Input
-                placeholder="Sydney, NSW"
-                value={formData.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Tell us about yourself</label>
+            <label className="text-sm font-medium">About you *</label>
             <Textarea
-              placeholder="Share what makes you unique..."
+              placeholder="Share what makes you unique, your goals, and what kind of connections you're looking for..."
               value={formData.bio}
               onChange={(e) => handleInputChange("bio", e.target.value)}
-              className="min-h-[100px]"
+              className="min-h-[120px]"
             />
-          </div>
-
-          <div className="space-y-3">
-            <label className="text-sm font-medium">
-              {userType === "participant" ? "Interests & Hobbies" : "Skills & Experience"}
-            </label>
-            <p className="text-xs text-muted-foreground mb-3">
-              Select all that apply - click to add or remove
-            </p>
-            <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
-              {(userType === "participant" ? PARTICIPANT_INTERESTS : CARER_SKILLS).map((item) => {
-                const isSelected = userType === "participant" 
-                  ? formData.interests.includes(item)
-                  : formData.experience.includes(item);
-                
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => toggleSelection(item, userType === "participant" ? "interests" : "experience")}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                      isSelected
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-            </div>
           </div>
 
           <Button
@@ -220,7 +324,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             variant="premium"
             size="lg"
             className="w-full mt-6"
-            disabled={loading || !formData.name || !formData.bio || (userType === "participant" ? formData.interests.length === 0 : formData.experience.length === 0)}
+            disabled={loading || !formData.bio}
           >
             {loading ? "Creating Profile..." : "Start Connecting"}
             <ArrowRight className="w-5 h-5" />
