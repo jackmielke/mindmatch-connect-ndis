@@ -22,7 +22,7 @@ const CARER_SKILLS = [
 ];
 
 interface OnboardingProps {
-  onComplete: (userType: "participant" | "carer", userData: any) => void;
+  onComplete: () => void;
 }
 
 const Onboarding = ({ onComplete }: OnboardingProps) => {
@@ -73,7 +73,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
       });
       
       toast.success("Profile created successfully!");
-      onComplete(userType, formData);
+      onComplete();
     } catch (error) {
       console.error('Error creating profile:', error);
       toast.error("Failed to create profile. Please try again.");
